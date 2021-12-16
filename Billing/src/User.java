@@ -1,0 +1,193 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Base64;
+import java.util.Scanner;
+
+public class User extends admin {
+	
+	Connection c = null;
+	String out2 = "";
+	String out = "";
+	String out1 = "";
+	String out3 = "";
+	String out4 = "";
+	String out5 = "";
+	String out6 = "";
+	//connection
+	public  Connection getConnection() {
+		try {
+			c = DriverManager.getConnection("jdbc:mysql://localhost:3306/Billing", "root", "Kowsilucky@7");
+			Statement st = c.createStatement();
+		} catch (Exception e) {
+		System.out.println(e);
+		}
+		return c;
+		}
+		
+//signup	
+       public void signup() throws SQLException {
+    	   Connection c = getConnection();
+    	   Statement st = c.createStatement();
+        	Scanner s = new Scanner(System.in);
+        	System.out.println("Enter user-id:");
+        	String Id = s.next();
+        	
+        	ResultSet rs1 = st.executeQuery("Select * from Employee where Id='" + Id + "' ");
+		       while (rs1.next()) {
+		        out5= rs1.getString(1);
+		      
+		       }
+
+		       if (out5.contains(Id)) {
+		       System.out.println( "Already you have been registered");
+		       signup();
+		       }
+		       ResultSet rs3 = st.executeQuery("Select * from customer where Id='" + Id + "' ");
+		       while (rs3.next()) {
+		        out6= rs3.getString(1);
+		      
+		       }
+
+		       if (out6.contains(Id)) {
+		       System.out.println( "Already you have been registered");
+		       signup();
+		       }
+        	System.out.println("Enter user-name:");
+        	String Name = s.next();
+        	System.out.println("Enter Number:");
+        	int Number = s.nextInt();
+        	
+        	System.out.println("Enter Email:");
+        	String Email = s.next();
+        
+			    while(!(Email.length() > 10)&&!(Email.contains("@gmail.com"))) 
+				  {
+				     System.out.println("check your email it is incorrect \n Re-enter a valid email id:");
+				     Email = s.next();
+				  }
+			    
+			    
+        	System.out.println("Enter Address:");
+        	String Address = s.next();
+        	System.out.println("Enter Password:");
+        	String Password = s.next();
+        	String encodedInput = Base64.getEncoder().encodeToString(Password.getBytes());
+        	
+        	byte[] output = Base64.getDecoder().decode(encodedInput);
+        	String decodedResult = new String(output);
+        	
+
+
+        	   while (!(Password.matches(".*[a-z]{1,}.*") && Password.matches(".*[A-Z]{1,}.*") && Password.matches(".*[0-9]{1,}.*")
+        			&& Password.matches(".*[@#$()!~%^&|*?.,]{1,}.*") && (Password.length() <= 10) && (!Password.contains(" "))))
+        	    {
+        		   System.out.println("please use a strong password(uppercase,lowercase,special characters,numbers) \n Re-enter a valid Password :");
+				   Password = s.next();
+        	     }
+        	  
+
+        	
+        	System.out.println("Enter the key:");
+        	Scanner sc2 = new Scanner(System.in);
+        	String key = sc2.next();
+        	
+        	ResultSet rs2 = st.executeQuery("Select * from Employee where Email='" + Email + "' ");
+        	    while (rs2.next()) {
+        	         out = rs2.getString(4);
+        	    if (out.contains(Email)) {
+        	         System.out.println("MailId already exists ");       	
+        	        }
+        	      }       	
+        	    if (key.equals("employee"))
+        	      {        		
+        	        st.executeUpdate("Insert into Employee(Id,Name,Number,Email,Address,Password,keyvalue) values('" + Id + "','" + Name + "','" + Number + "','" + Email + "','" + Address + "','" + encodedInput + "','employee')");
+        	        System.out.println("Data Entered Successfully");
+        	      }       	
+        	    else if(key.equals("customer")) {
+        	        st.executeUpdate("Insert into Customer(Id,Name,Number,Email,Address,Password,keyvalue) values('" + Id + "','" + Name + "','" + Number + "','" + Email + "','" + Address + "','" + encodedInput + "','customer')");
+        	        System.out.println("Data Entered Successfully");
+        	      }
+        	    else
+        	       {
+        	        System.out.println("Invalid key");
+        	       }
+        	}
+		      
+  //signin      	
+	
+       public void signin() throws SQLException
+       {
+       	Connection c=getConnection();
+       int count=0;
+       Statement st=c.createStatement();
+       Scanner sc=new Scanner(System.in);
+       System.out.println("Enter Email:");
+       String Email=sc.next();
+       System.out.println("Enter Password:");
+       String Password = sc.next();
+       String encodedInput = Base64.getEncoder().encodeToString(Password.getBytes());
+       
+    	   Scanner sc2=new Scanner(System.in);
+       System.out.println("Enter the key:");
+       String key = sc2.next();
+     //employee login  
+       ResultSet rs1 = st.executeQuery("Select * from Employee where Email='" + Email + "' ");
+       while (rs1.next()) {
+       out3 = rs1.getString(4);
+       out4=rs1.getString(6);
+       }
+       if (key.equals("employee"))   
+       if (out3.contains(Email)&& (out4.equals(encodedInput))) {
+       System.out.println("You are an Employee Login Successful");
+       User a= new User();
+       a.Employee();
+       a.electicity();
+      
+       }
+       else
+       {
+       System.out.println(" User not found");
+
+       }
+  //customer login
+       ResultSet rs = st.executeQuery("Select * from Customer where Email='" + Email + "' and Password ='" +Password + "'");
+
+       while (rs.next()) {
+       out1 = rs.getString(4);
+       out2 = rs.getString(6);
+       }      
+       if (key.equals("customer"))
+       if (out1.equals(Email) && (out2.equals(Password))) {
+       System.out.println("You are an Customer Login Successful ");
+       User a= new User();
+       a.Customer();
+       a.payment();
+       
+       }
+       else
+       {
+       System.out.println(" User not found");
+       }
+ }
+
+  //Main Method    
+    
+       public static void main(String args[]) throws SQLException {
+    	   User k = new User();
+    	   System.out.println(" Choose an option \n");
+    	   System.out.println("1. Signup \n 2. Signin");
+    	  
+    	   Scanner sc = new Scanner(System.in);
+    	   int ch = sc.nextInt();
+    	   int count = 0;
+    	   if (ch == 1) {
+    	   k.signup();
+    	   } else
+    	   k.signin();
+    	   }    	       	      
+}
+	
+
