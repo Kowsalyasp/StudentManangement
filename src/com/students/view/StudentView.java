@@ -18,9 +18,9 @@ public class StudentView {
 	 * Getting a roll number from the student and it validate the inputs.
 	 */
 	public int getRollNo() throws InputMismatchException {
-		System.out.println("Enter rollNo:");
+		System.out.println("Enter RollNo:");
 		String rollNo = StudentMain.SCANNER.next();
-		int rollNumber = StudentValidation.getRollNumberValidation(rollNo);
+		int rollNumber = StudentValidation.rollNumberValidation(rollNo);
 		
 		return rollNumber;
 	}
@@ -29,10 +29,10 @@ public class StudentView {
 	 * Getting a name from the student and it validate the inputs.
 	 */
 	public String getName() {
-		System.out.println("Enter name:");
+		System.out.println("Enter Name:");
 		String name = StudentMain.SCANNER.next();
 
-		StudentValidation.getNamevalidation(name);
+		StudentValidation.namevalidation(name);
 		return name;
 	}
 
@@ -40,9 +40,9 @@ public class StudentView {
 	 * Get the phone number from the student and validate the input.
 	 */
 	public long getPhoneNumber() {
-		System.out.println("Enter phonenumber:");
+		System.out.println("Enter Phonenumber:");
 		String phoneNumber = StudentMain.SCANNER.next();
-		long phoneNo = StudentValidation.getPhoneNumbervalidation(phoneNumber);
+		long phoneNo = StudentValidation.phoneNumbervalidation(phoneNumber);
 		
 		return phoneNo;
 	}
@@ -54,7 +54,7 @@ public class StudentView {
 		System.out.println("Enter Branch:");
 		String branch = StudentMain.SCANNER.next();
 
-		StudentValidation.getBranchValidation(branch);
+		StudentValidation.branchValidation(branch);
 		return branch;
 	}
 
@@ -64,7 +64,7 @@ public class StudentView {
 	public Date getAdmissionDate() throws ParseException {
 		System.out.println("Enter day/month/year");
 		String date = StudentMain.SCANNER.next();
-		Date admissionDate = StudentValidation.getAdmissionDateValidation(date);
+		Date admissionDate = StudentValidation.admissionDateValidation(date);
 		
 		return admissionDate;
 	}

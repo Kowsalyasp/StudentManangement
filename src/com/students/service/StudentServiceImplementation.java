@@ -9,8 +9,7 @@ import com.students.model.Student;
 import com.students.view.StudentDetails;
 
 /**
- * <h1>Student, Implementation!</h1> The StudentImplementation implements an
- * program to provide services and gives definition to StudentService.
+ * The StudentImplementation implements an program to provide services and gives definition to StudentService.
  */
 public class StudentServiceImplementation implements StudentService {
 	private static final Map<Integer, Student> STUDENTS = new HashMap<>();
@@ -51,7 +50,7 @@ public class StudentServiceImplementation implements StudentService {
 			System.out.println("No student record found");
 			int rollNumber = StudentManagement.getRollNo();
 			
-			return searchStudent(rollNumber);
+			return removeStudent(rollNumber);
 		}
 		return STUDENTS.remove(rollNo);
 	}
