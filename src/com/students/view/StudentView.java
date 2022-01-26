@@ -4,70 +4,55 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Map.Entry;
+
+import com.students.main.StudentMain;
 import com.students.model.Student;
 
 /**
- * <h1>Student, View!</h1> The StudentView program implements an application
- * that simply displays "User input".
+ * The StudentView program implements an application that simply displays "User input".
  */
-
 public class StudentView {
 
 	/**
-	 * {@code Scanner} that returns values scanned the specified source.
-	 */
-	private static final Scanner SCANNER = new Scanner(System.in);
-
-	/**
 	 * Getting a roll number from the student and it validate the inputs.
-	 * 
-	 * @return int, roll number is given in the format of digit.
-	 * @throws InputMismatchException
 	 */
 	public int getRollNo() throws InputMismatchException {
 		System.out.println("Enter rollNo:");
-		String rollNo = SCANNER.next();
-
+		String rollNo = StudentMain.SCANNER.next();
 		int rollNumber = StudentValidation.getRollNumberValidation(rollNo);
+		
 		return rollNumber;
 	}
 
 	/**
 	 * Getting a name from the student and it validate the inputs.
-	 * 
-	 * @return String
 	 */
 	public String getName() {
-		System.out.println("Enter new name:");
-		String name = SCANNER.next();
+		System.out.println("Enter name:");
+		String name = StudentMain.SCANNER.next();
 
 		StudentValidation.getNamevalidation(name);
 		return name;
 	}
 
 	/**
-	 * Getting the phone number from the student and validate the input.
-	 * 
-	 * @return long
+	 * Get the phone number from the student and validate the input.
 	 */
 	public long getPhoneNumber() {
 		System.out.println("Enter phonenumber:");
-		String phoneNumber = SCANNER.next();
-
+		String phoneNumber = StudentMain.SCANNER.next();
 		long phoneNo = StudentValidation.getPhoneNumbervalidation(phoneNumber);
+		
 		return phoneNo;
 	}
 
 	/**
 	 * Get a branch and validate it according to user input.
-	 * 
-	 * @return String
 	 */
 	public String getBranch() {
 		System.out.println("Enter Branch:");
-		String branch = SCANNER.next();
+		String branch = StudentMain.SCANNER.next();
 
 		StudentValidation.getBranchValidation(branch);
 		return branch;
@@ -75,25 +60,20 @@ public class StudentView {
 
 	/**
 	 * Get date of birth from the student and validate it based on input.
-	 * 
-	 * @return Date
-	 * @throws ParseException
 	 */
 	public Date getAdmissionDate() throws ParseException {
 		System.out.println("Enter day/month/year");
-		String date = SCANNER.next();
-
+		String date = StudentMain.SCANNER.next();
 		Date admissionDate = StudentValidation.getAdmissionDateValidation(date);
+		
 		return admissionDate;
 	}
 
 	/**
-	 * It iterates one by one to show all Students details from the list.
-	 * 
-	 * @param map
+	 * Iterate one by one to show all Students details from the list.
 	 */
 	public void showAllStudents(Map<Integer, Student> map) {
-		
+
 		for (Entry<Integer, Student> entry : map.entrySet()) {
 			Student value = entry.getValue();
 			System.out.println(value);
@@ -101,9 +81,7 @@ public class StudentView {
 	}
 
 	/**
-	 * It shows the student detail from the list based on unique roll number.
-	 * 
-	 * @param show
+	 * Show the student detail from the list based on unique roll number.
 	 */
 	public void showStudent(Student show) {
 		System.out.println(show);

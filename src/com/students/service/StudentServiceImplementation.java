@@ -3,6 +3,7 @@ package com.students.service;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.students.controller.StudentManagement;
 import com.students.model.Student;
 import com.students.view.StudentDetails;
@@ -12,69 +13,56 @@ import com.students.view.StudentDetails;
  * program to provide services and gives definition to StudentService.
  */
 public class StudentServiceImplementation implements StudentService {
-	public static final Map<Integer, Student> STUDENTS = new HashMap<>();
+	private static final Map<Integer, Student> STUDENTS = new HashMap<>();
 
 	/**
-	 * Method to add Student Details from the student. where it do add operation
-	 * only.
-	 * 
-	 * @param rollNo  first parameter to addStudentDetails
-	 * @param student second parameter to addStudentdetails
-	 * @return Map<Integer, Student> This returns STUDENTS
+	 * Add Student Details from the student.
 	 */
-	public Map<Integer, Student> addStudent(int rollNo, Student student) {
-		STUDENTS.put(rollNo, student);
-		return STUDENTS;
+	public Student addStudent(int rollNo, Student student) {
+
+		if (STUDENTS.containsKey(rollNo)) {
+			System.out.println("Roll number aldready exist");
+		} else {
+			STUDENTS.put(rollNo, student);
+		}
+		return student;
 	}
 
 	/**
-	 * Method to get Student Details. Implemented search operation.
-	 * 
-	 * @param rollNo one parameter to searchStudentDetail
-	 * @return Student This returns get the value of given rollNo
+	 * Search student detail by using roll number.
 	 */
 	public Student searchStudent(int rollNo) {
-		
+
 		if (!STUDENTS.containsKey(rollNo)) {
 			System.out.println("No student record found \n");
 			int rollNumber = StudentManagement.getRollNo();
+			
 			return searchStudent(rollNumber);
 		}
 		return STUDENTS.get(rollNo);
 	}
 
 	/**
-	 * Method to remove Student Details. where to do remove a student from the
-	 * table. detail.
-	 * 
-	 * @param rollNo one parameter to removeStudentDetail
-	 * @return Student This returns to remove the value of given rollNo
+	 * Remove Student Detail by using roll number.
 	 */
 	public Student removeStudent(int rollNo) {
-		
+
 		if (!STUDENTS.containsKey(rollNo)) {
 			System.out.println("No student record found");
-			int rollNumber = StudentManagement.getRollNo();			
+			int rollNumber = StudentManagement.getRollNo();
+			
 			return searchStudent(rollNumber);
 		}
 		return STUDENTS.remove(rollNo);
 	}
 
 	/**
-	 * Method to update Student Details. where to replace a student from the table.
-	 * detail.
-	 * 
-	 * @param rollNo  first parameter to updateStudentDetail
-	 * @param student second parameter to updateStudentDetail
-	 * @return
-	 * @return Student This returns to update the value of student which is
-	 *         preferred.
-	 * @throws ParseException
+	 * Update Student Details.To replace a student value.
 	 */
-	public Student updateStudent(int rollNo, Student student) throws ParseException {
-		
-		if (STUDENTS.containsKey(rollNo)) {
-			Student existingStudent = STUDENTS.get(rollNo);
+	public Student updateStudent(Student student) throws ParseException {
+
+		if (STUDENTS.containsKey(student.getRollNo())) {
+			Student existingStudent = STUDENTS.get(student.getRollNo());
 
 			if (student.getName() != null) {
 				existingStudent.setName(student.getName());
@@ -85,8 +73,7 @@ public class StudentServiceImplementation implements StudentService {
 			} else if (student.getAdmissionDate() != null) {
 				existingStudent.setAdmissionDate(student.getAdmissionDate());
 			}
-			return STUDENTS.replace(rollNo, existingStudent);
-		} else if (!STUDENTS.containsKey(rollNo)) {
+		} else {
 			System.out.println("Invalid Roll No");
 			StudentDetails.updateStudent();
 		}
@@ -94,10 +81,7 @@ public class StudentServiceImplementation implements StudentService {
 	}
 
 	/**
-	 * Method to Show All Student Details from the table. where to display all
-	 * students. details as an output.
-	 * 
-	 * @return Nothing
+	 * Show All Student Details as an output.
 	 */
 	public void showAllStudents() {
 		System.out.println(STUDENTS);
