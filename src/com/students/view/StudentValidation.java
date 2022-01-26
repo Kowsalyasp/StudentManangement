@@ -15,12 +15,12 @@ public class StudentValidation {
 	/**
 	 * Validate the roll number based on given input.
 	 */
-	public static int rollNumberValidation(String rollNumber) {
+	public static int getRollNumberValidation(String rollNumber) {
 
 		if (!rollNumber.matches("[0-9]{3}")) {
 			System.out.println("check your roll number  is incorrect \n Enter valid rollno:");
 			String rollNo = StudentMain.SCANNER.next();
-			return StudentValidation.rollNumberValidation(rollNo);
+			return StudentValidation.getRollNumberValidation(rollNo);
 		}
 		return Integer.parseInt(rollNumber);
 	}
@@ -28,12 +28,12 @@ public class StudentValidation {
 	/**
 	 * Validate the name based on given input.
 	 */
-	public static String namevalidation(String name) {
+	public static String getNamevalidation(String name) {
 
 		if (!name.matches("[A-Z][a-z]*||[A-Za-z\\s]*")) {
 			System.out.println("Check your name is incorrect \n Enter valid name:");
 			String validName = StudentMain.SCANNER.next();
-			return StudentValidation.namevalidation(validName);
+			return StudentValidation.getNamevalidation(validName);
 		}
 		return name;
 	}
@@ -41,12 +41,12 @@ public class StudentValidation {
 	/**
 	 * Validate the phone Number based on input.
 	 */
-	public static long phoneNumbervalidation(String phoneNumber) {
+	public static long getPhoneNumbervalidation(String phoneNumber) {
 
 		if (!phoneNumber.matches("[6789]{1}[0-9]{9}")) {
 			System.out.println("Check your mobile Number is incorrect \n Enter valid phoneNumber:");
 			String phoneNo = StudentMain.SCANNER.next();
-			return StudentValidation.phoneNumbervalidation(phoneNo);
+			return StudentValidation.getPhoneNumbervalidation(phoneNo);
 		}
 		return Long.parseLong(phoneNumber);
 	}
@@ -54,12 +54,12 @@ public class StudentValidation {
 	/**
 	 * Validate the Branch Name based on input.
 	 */
-	public static String branchValidation(String branch) {
+	public static String getBranchValidation(String branch) {
 
 		if (!branch.matches("^[A-Z][a-z]*$")) {
 			System.out.println("Check your branch  is incorrect \n Enter valid branch name:");
 			String validBranch = StudentMain.SCANNER.next();
-			return StudentValidation.branchValidation(validBranch);
+			return StudentValidation.getBranchValidation(validBranch);
 		}
 		return branch;
 	}
@@ -67,7 +67,7 @@ public class StudentValidation {
 	/**
 	 * Get and validate the value of admission date by importing Date class.
 	 */
-	public static Date admissionDateValidation(String date) {
+	public static Date getAdmissionDateValidation(String date) {
 
 		try {
 			LocalDate todayDate = LocalDate.now();
@@ -84,14 +84,14 @@ public class StudentValidation {
 				System.out.println("Preceeds the current date \n Please Enter Valid Date");
 				String validDate = StudentMain.SCANNER.next();
 				
-				return StudentValidation.admissionDateValidation(validDate);
+				return StudentValidation.getAdmissionDateValidation(validDate);
 			}
 			return inputDate;
 		} catch (Exception e) {
 			System.out.println("Invalid \n Please Enter Valid Date");
 			String validDate = StudentMain.SCANNER.next();
 			
-			return StudentValidation.admissionDateValidation(validDate);
+			return StudentValidation.getAdmissionDateValidation(validDate);
 		}
 	}
 }
