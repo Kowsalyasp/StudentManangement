@@ -1,5 +1,6 @@
 package com.students.view;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -17,11 +18,11 @@ public class StudentDetails {
 	/**
 	 * Adding the student details .
 	 */
-	public static void addStudent() throws ParseException, InputMismatchException {
+	public static void addStudent() throws ParseException, InputMismatchException, SQLException {
 		int rollNo = VIEW.getRollNo();
 		String name = VIEW.getName();
 		long phoneNumber = VIEW.getPhoneNumber();
-		String branch = VIEW.getBranch();
+		String branch = VIEW.getBranchName();
 		Date admissionDate = VIEW.getAdmissionDate();
 		Student student = new Student(rollNo, name, phoneNumber, branch, admissionDate);
 		
@@ -30,8 +31,9 @@ public class StudentDetails {
 
 	/**
 	 * Search the student detail based on roll number.
+	 * @throws SQLException 
 	 */
-	public static void searchStudent() {
+	public static void searchStudent() throws SQLException {
 		int rollNo = VIEW.getRollNo();
 
 		StudentManagement.searchStudent(rollNo);
@@ -39,8 +41,9 @@ public class StudentDetails {
 
 	/**
 	 * Remove the student detail for the specified roll number.
+	 * @throws SQLException 
 	 */
-	public static void removeStudent() {
+	public static void removeStudent() throws SQLException {
 		int rollNo = VIEW.getRollNo();
 
 		StudentManagement.removeStudent(rollNo);
@@ -48,8 +51,10 @@ public class StudentDetails {
 
 	/**
 	 * Updating the student detail.
+	 * @throws SQLException 
+	 * @throws InputMismatchException 
 	 */
-	public static void updateStudent() throws ParseException {
+	public static void updateStudent() throws ParseException, InputMismatchException, SQLException {
 		System.out.println("Choose What You Want To Update \n1.Student Name \n2.Branch Name \n3.Phone Number\n4.Date of Birth\n");
 		int choice = StudentMain.SCANNER.nextInt();
 
@@ -58,7 +63,7 @@ public class StudentDetails {
 			StudentDetails.updateStudentName(VIEW.getRollNo(), VIEW.getName());
 			break;			
 		case 2: 
-			StudentDetails.updateStudentBranch(VIEW.getRollNo(), VIEW.getBranch());
+			StudentDetails.updateStudentBranch(VIEW.getRollNo(), VIEW.getBranchName());
 			break;		
 		case 3:
 			StudentDetails.updateStudentPhoneNumber(VIEW.getRollNo(), VIEW.getPhoneNumber());
@@ -74,8 +79,9 @@ public class StudentDetails {
 
 	/**
 	 * Update the student name based on roll number.
+	 * @throws SQLException 
 	 */
-	private static void updateStudentName(int rollNo, String name) throws ParseException {
+	private static void updateStudentName(int rollNo, String name) throws ParseException, SQLException {
 		Student student = new Student();
 		student.setRollno(rollNo);
 		student.setName(name);
@@ -85,19 +91,21 @@ public class StudentDetails {
 
 	/**
 	 * Update the student branch name based on roll number.
+	 * @throws SQLException 
 	 */
-	private static void updateStudentBranch(int rollNo, String branch) throws ParseException {
+	private static void updateStudentBranch(int rollNo, String branchName) throws ParseException, SQLException {
 		Student student = new Student();
 		student.setRollno(rollNo);
-		student.setBranch(branch);
+		student.setBranch(branchName);
 
 		StudentManagement.updateStudent(student);
 	}
 
 	/**
 	 * Update the student phone number based on roll number.
+	 * @throws SQLException 
 	 */
-	private static void updateStudentPhoneNumber(int rollNo, long phoneNumber) throws ParseException {
+	private static void updateStudentPhoneNumber(int rollNo, long phoneNumber) throws ParseException, SQLException {
 		Student student = new Student();
 		student.setRollno(rollNo);
 		student.setPhoneNumber(phoneNumber);
@@ -107,8 +115,9 @@ public class StudentDetails {
 
 	/**
 	 * Update the student admission date based on roll number.
+	 * @throws SQLException 
 	 */
-	private static void updateStudentAdmissionDate(int rollNo, Date date) throws ParseException {
+	private static void updateStudentAdmissionDate(int rollNo, Date date) throws ParseException, SQLException {
 		Student student = new Student();
 		student.setRollno(rollNo);
 		student.setAdmissionDate(date);
@@ -118,8 +127,9 @@ public class StudentDetails {
 
 	/**
 	 * It displays all students from the table.
+	 * @throws SQLException 
 	 */
-	public static void showAllStudents() {
+	public static void showAllStudents() throws SQLException {
 		StudentManagement.showAllStudents();
 	}
 }

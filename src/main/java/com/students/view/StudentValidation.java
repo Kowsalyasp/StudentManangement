@@ -3,7 +3,7 @@ package com.students.view;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
 
 import com.students.main.StudentMain;
 
@@ -54,14 +54,14 @@ public class StudentValidation {
 	/**
 	 * Validate the Branch Name based on input.
 	 */
-	public static String getBranchValidation(String branch) {
+	public static String getBranchValidation(String branchName) {
 
-		if (!branch.matches("^[A-Z][a-z]*$")) {
+		if (!branchName.matches("^[A-Z][a-z]*$")) {
 			System.out.println("Check your branch  is incorrect \n Enter valid branch name:");
-			String validBranch = StudentMain.SCANNER.next();
-			return StudentValidation.getBranchValidation(validBranch);
+			String validBranchName = StudentMain.SCANNER.next();
+			return StudentValidation.getBranchValidation(validBranchName);
 		}
-		return branch;
+		return branchName;
 	}
 
 	/**
@@ -75,10 +75,10 @@ public class StudentValidation {
 			
 			formatter.setLenient(false);
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			date = dateFormat.format(formatter.parse(date));
-			// dates to be compare
-			Date inputDate = dateFormat.parse(date.toString());
-			Date currentDate = dateFormat.parse(todayDate.toString());
+			date = dateFormat.format(formatter.parse(date));	
+			//dates to be compared
+			java.util.Date inputDate = java.sql.Date.valueOf(date);					
+			java.util.Date currentDate = dateFormat.parse(todayDate.toString());
 
 			if (inputDate.compareTo(currentDate) > 0) {
 				System.out.println("Preceeds the current date \n Please Enter Valid Date");
@@ -86,7 +86,7 @@ public class StudentValidation {
 				
 				return StudentValidation.getAdmissionDateValidation(validDate);
 			}
-			return inputDate;
+			return java.sql.Date.valueOf(inputDate.toString());
 		} catch (Exception e) {
 			System.out.println("Invalid \n Please Enter Valid Date");
 			String validDate = StudentMain.SCANNER.next();

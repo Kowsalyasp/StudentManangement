@@ -1,5 +1,6 @@
 package com.students.service;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 
 import com.students.model.Student;
@@ -14,7 +15,7 @@ public interface StudentService {
 
 	Student removeStudent(int rollNo);
 
-	Student updateStudent(Student student) throws ParseException;
+	Student updateStudent(Student student) throws ParseException, SQLException;
 
 	void showAllStudents();
 }

@@ -1,5 +1,6 @@
 package com.students.main;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -17,7 +18,7 @@ public class StudentMain {
 	/**
 	 * Method which makes use of all services such as adding, searching, removing, updating the student details.
 	 */
-	public static void main(String[] args) throws ParseException, InputMismatchException {
+	public static void main(String[] args) throws ParseException, InputMismatchException, SQLException {
 		int choice;
 
 		do {

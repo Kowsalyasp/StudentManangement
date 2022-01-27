@@ -1,7 +1,10 @@
 package com.students.service;
 
+import java.sql.SQLException;
 import java.text.ParseException;
+
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 
 import com.students.controller.StudentManagement;
@@ -12,7 +15,7 @@ import com.students.view.StudentDetails;
  * The StudentImplementation implements an program to provide services and gives definition to StudentService.
  */
 public class StudentServiceImplementation implements StudentService {
-	private static final Map<Integer, Student> STUDENTS = new HashMap<>();
+	private static final Map<Integer, Student> STUDENTS = new HashMap<Integer, Student>();
 
 	/**
 	 * Add Student Details from the student.
@@ -57,8 +60,10 @@ public class StudentServiceImplementation implements StudentService {
 
 	/**
 	 * Update Student Details.To replace a student value.
+	 * @throws SQLException 
+	 * @throws InputMismatchException 
 	 */
-	public Student updateStudent(Student student) throws ParseException {
+	public Student updateStudent(Student student) throws ParseException, InputMismatchException, SQLException {
 
 		if (STUDENTS.containsKey(student.getRollNo())) {
 			Student existingStudent = STUDENTS.get(student.getRollNo());

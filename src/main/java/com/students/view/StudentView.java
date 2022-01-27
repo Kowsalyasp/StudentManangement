@@ -50,12 +50,12 @@ public class StudentView {
 	/**
 	 * Get a branch and validate it according to user input.
 	 */
-	public String getBranch() {
+	public String getBranchName() {
 		System.out.println("Enter Branch:");
-		String branch = StudentMain.SCANNER.next();
+		String branchName = StudentMain.SCANNER.next();
 
-		StudentValidation.getBranchValidation(branch);
-		return branch;
+		StudentValidation.getBranchValidation(branchName);
+		return branchName;
 	}
 
 	/**
@@ -85,5 +85,5 @@ public class StudentView {
 	 */
 	public void showStudent(Student show) {
 		System.out.println(show);
-	}
+	}	
 }
