@@ -4,18 +4,17 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Map;
 
+import com.students.exception.InvalidStudentDataException;
 import com.students.model.Student;
 
 public interface StudentDao {
-	public Student insertStudent(int rollNo, Student student) throws  StoreStudentDataException;
+	 Student insertStudent(int rollNo, Student student) throws InvalidStudentDataException;
 	
-	public Student selectStudent(int rollNo) throws InvalidRollNumberException;
+	 Student selectStudent(int rollNo) throws InvalidStudentDataException;
 	
-	public boolean deleteStudent(int rollNo) throws InvalidRollNumberException;
+	 void deleteStudent(int rollNo) throws InvalidStudentDataException;
 	
-	public Student updateStudent(Student student) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException;
+	 void updateStudent(Student student) throws ParseException, SQLException, InvalidStudentDataException;
 	
-	public Map<Integer, Student> selectAllStudents();
-	
-	public Student updateAllStudent(Student student) throws NoSuchUpdateException ;
+	 Map<Integer, Student> selectAllStudents();
 }

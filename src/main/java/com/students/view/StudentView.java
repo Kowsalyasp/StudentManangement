@@ -2,7 +2,6 @@ package com.students.view;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,7 +17,7 @@ public class StudentView {
 	/**
 	 * Getting a roll number from the student and it validate the inputs.
 	 */
-	public int getRollNo() throws InputMismatchException {
+	public int getRollNo() {
 		System.out.println("Enter RollNo:");
 		String rollNo = StudentMain.SCANNER.next();
 		int rollNumber = StudentManagement.getRollNumber(rollNo);

@@ -2,7 +2,6 @@ package com.students.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,174 +11,158 @@ import java.util.Map;
 
 import com.students.model.Student;
 
+/**
+ * Implemented the SQL query and connected with database.
+ */
 public class StudentServiceDao implements StudentDao {
-	private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/studentdatabase";
-	private static final String JDBC_USERNAME = "postgres";
-	private static final String JDBC_PASSWORD = "root";
-	
-	protected static Connection getConnection() {
-		Connection connection = null;
 
-		try {
-			Class.forName("org.postgresql.Driver");
-			connection = DriverManager.getConnection(JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD);
-		} catch (SQLException e) {
-			System.out.println("Caught an SQL Exception ");
-		} catch (ClassNotFoundException e) {
-			System.out.println("Error Occured! Class is Not Found");
-		}
-		return connection;
-	}
-
-	public Student insertStudent(int rollNo, Student student) throws StoreStudentDataException {
-		final String insertStudent = "INSERT INTO student(rollno, name, phonenumber, branch, admissiondate, isactive) VALUES (?, ?, ?, ?, ?, ?)";
+	/**
+	 * Insert student data's to the database for the specified roll number.
+	 */
+	public Student insertStudent(final int rollNo, final Student student) {
+		final String insertStudent = "INSERT INTO student(roll_no, name, phone_number, branch, admission_date, is_active) VALUES (?, ?, ?, ?, ?, ?)";
 		
-		try (Connection connection = getConnection();
-			PreparedStatement statement = connection.prepareStatement(insertStudent)) {
+		try (final Connection connection = StudentDbConnection.getConnection();
+			final PreparedStatement statement = connection.prepareStatement(insertStudent)) {
 			statement.setInt(1, student.getRollNo());
 			statement.setString(2, student.getName());
 			statement.setLong(3, student.getPhoneNumber());
 			statement.setString(4, student.getBranch());
 			statement.setObject(5, student.getAdmissionDate());
-			statement.setBoolean(6,true);
-			System.out.println(statement);
-			statement.executeUpdate();
-			
+			statement.setBoolean(6, true);
+			statement.executeUpdate();			
 		} catch (SQLException exception) {
-			throw new StoreStudentDataException("Failed to save student record");
+			System.out.println("Failed To Insert Data");
 		}
 		return student;
 	}
 
-	public Student selectStudent(int rollNo) throws InvalidRollNumberException {
+	/**
+	 * Fetch student data from database by using roll number.
+	 */
+	public Student selectStudent(final int rollNo) {
 		Student student = null;
-		final String selectStudentByRollNo = "SELECT * from student WHERE rollno =?";
+		final String selectStudentByRollNo = "SELECT * from student WHERE roll_no =?";
 		
-		try (Connection connection = getConnection();
-			PreparedStatement statement = connection.prepareStatement(selectStudentByRollNo);) {
+		try (final Connection connection = StudentDbConnection.getConnection();
+			final PreparedStatement statement = connection.prepareStatement(selectStudentByRollNo); ){			
 			statement.setInt(1, rollNo);
-			ResultSet selectStudent = statement.executeQuery();
-
+			final ResultSet selectStudent = statement.executeQuery();
+						
 			while (selectStudent.next()) {
-				String name = selectStudent.getString(2);
-				long phoneNumber = selectStudent.getLong(3);
-				String branch = selectStudent.getString(4);
-				Date admissionDate = selectStudent.getDate(5);
+				final String name = selectStudent.getString(2);
+				final long phoneNumber = selectStudent.getLong(3);
+				final String branch = selectStudent.getString(4);
+				final Date admissionDate = selectStudent.getDate(5);
 				student = new Student(rollNo, name, phoneNumber, branch, admissionDate);
 			}
-		} catch (SQLException e) {
-			throw new InvalidRollNumberException("Student record not found");
+			selectStudent.close();
+		} catch (SQLException exception) {
+			System.out.println("Student Record Not Found");
 		  }
 		return student;
 	}
 
-	public boolean deleteStudent(int rollNo) throws InvalidRollNumberException {
-		boolean rowDeleted = false;
-		final String deleteStudent ="UPDATE student SET isactive = ? WHERE rollno = ?";
+    /**
+     * Delete student data from the database.
+     */
+	public void deleteStudent(final int rollNo) {
+		final String deleteStudent ="UPDATE student SET is_active = ? WHERE roll_no = ?";
 		
-		try (Connection connection = getConnection();
-			PreparedStatement statement = connection.prepareStatement(deleteStudent);) {
+		try (final Connection connection = StudentDbConnection.getConnection();
+			final PreparedStatement statement = connection.prepareStatement(deleteStudent);) {
 			statement.setBoolean(1, false);
 			statement.setInt(2, rollNo);
-			rowDeleted = true;
-			rowDeleted = statement.executeUpdate() > 0;
-
-			if (!rowDeleted)				
-				System.out.println("Error Occured");
-			else {
-				System.out.println("One Student Successfully Deleted ");
-			}
-		} catch (SQLException e) {
-			throw new InvalidRollNumberException("Unable to delete a student record from database");
-		}
-		return rowDeleted;
+			statement.executeUpdate();
+		} catch (SQLException exception) {
+			System.out.println("Failed To Delete");
+		}	
 	}
 
-	public Student updateStudent(Student student) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
-		final String updateName = "UPDATE student SET name = ? WHERE rollno = ?";
-		final String updateBranch = "UPDATE student SET branch = ? WHERE rollno = ?";
-		final String updatePhoneNumber = "UPDATE student SET phonenumber = ? WHERE rollno = ?";
-		final String updateAdmissionDate = "UPDATE student SET admissiondate = ? WHERE rollno = ?";
+	/**
+	 * Update student data for the specified roll number.
+	 */
+	@SuppressWarnings("resource")
+	public void updateStudent(final Student student) throws ParseException, SQLException {	
+		final String updateQuery = "UPDATE student SET";
+		PreparedStatement statement=null;
 		
-		try (Connection connection = getConnection();){
+		try (final Connection connection = StudentDbConnection.getConnection();){	
 			
 			if (student.getName() != null) {
-				PreparedStatement statement = connection.prepareStatement(updateName);
-						
-				statement.setString(1, student.getName());
-				statement.setInt(2, student.getRollNo());
-				statement.executeUpdate();
-			} else if (student.getBranch() != null) {
-				PreparedStatement statement = connection.prepareStatement(updateBranch);
-						
+				 statement = connection.prepareStatement(updateQuery + " name=? WHERE roll_no=?" );
+				 
+				 statement.setString(1, student.getName());
+				 statement.setInt(2, student.getRollNo());
+			} 
+			
+			if (student.getBranch() != null) {	
+				statement = connection.prepareStatement(updateQuery + " branch=? WHERE roll_no=?" );
+				
 				statement.setString(1, student.getBranch());
 				statement.setInt(2, student.getRollNo());
-				statement.executeUpdate();
-
-			} else if (student.getPhoneNumber() != 0) {
-				PreparedStatement statement = connection.prepareStatement(updatePhoneNumber);
-						
-				statement.setLong(1, student.getPhoneNumber());
+		    } 
+			
+			if (student.getPhoneNumber() != 0) {
+		    	statement = connection.prepareStatement(updateQuery + " phone_number=? WHERE roll_no=?" );
+		    	
+		    	statement.setLong(1, student.getPhoneNumber());		    
 				statement.setInt(2, student.getRollNo());
-				statement.executeUpdate();
-			} else if (student.getAdmissionDate() != null) {
-				PreparedStatement statement = connection.prepareStatement(updateAdmissionDate);
-						
+		    } 
+			
+			if (student.getAdmissionDate() != null) {
+		    	statement = connection.prepareStatement(updateQuery + " admission_date=? WHERE roll_no=?" );
+		    	
 				statement.setObject(1, student.getAdmissionDate());
 				statement.setInt(2, student.getRollNo());
-				statement.executeUpdate();
-			}
+		    }		
+		    statement.executeUpdate();
 		} catch (SQLException exception) {
-			throw new NoSuchUpdateException("No update Available!");
-		} 
-		return student;
+			System.out.println("Failed To Update");
+		} 	
+		finally {
+			statement.close();
+		}
 	}
 
-	public Student updateAllStudent(Student student) throws NoSuchUpdateException {
-		boolean rowUpdated = false;
-		final String updateAllStudent = "Update student set name = ?, phonenumber = ?, branch = ?, admissiondate = ? where rollno = ?";
-	
-		try (Connection connection = getConnection();
-			PreparedStatement statement = connection.prepareStatement(updateAllStudent);) {
+	public Student updateAllStudent(final Student student) {
+		final String updateAllStudent = "UPDATE student SET name = ?, phone_number = ?, branch = ?, admission_date = ? WHERE roll_no = ?";
+		
+		try (final Connection connection = StudentDbConnection.getConnection();
+			final PreparedStatement statement = connection.prepareStatement(updateAllStudent);) {
 			statement.setString(1, student.getName());
 			statement.setString(3, student.getBranch());
 			statement.setLong(2, student.getPhoneNumber());
 			statement.setObject(4, student.getAdmissionDate());
 			statement.setInt(5, student.getRollNo());
-			statement.executeUpdate();
-			rowUpdated = true;
-			rowUpdated = statement.executeUpdate() > 0;
-				
-			if (!rowUpdated) 
-				throw new NoSuchUpdateException("Could not update the student record!");
-				else {
-				System.out.println("Student Successfully Updated ");
-			}			
+			statement.executeUpdate();	
 		} catch (SQLException exception) {
-			System.out.println("Error Occured While Updating All Record ");
+			System.out.println("Failed To Update All Data");
 		}
 		return student;
 	}
 
+	/**
+	 * Fetch all student data from database.
+	 */
 	public Map<Integer, Student> selectAllStudents() {
-		final String selectAllStudents = "SELECT * FROM student WHERE isactive = true";
+		final String selectAllStudents = "SELECT * FROM student WHERE is_active = true";
 		final Map<Integer, Student> students = new HashMap<>();
 
-		try (Connection connection = getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(selectAllStudents);) {
-			ResultSet viewAllStudents = preparedStatement.executeQuery();
-
-			while (viewAllStudents.next()) {
-			    int rollNumber = viewAllStudents.getInt(1);
-				String name = viewAllStudents.getString(2);
-				Long phoneNumber = viewAllStudents.getLong(3);
-				String branch = viewAllStudents.getString(4);
-				Date admissionDate = viewAllStudents.getDate(5);
+		try (final Connection connection = StudentDbConnection.getConnection();
+			final PreparedStatement preparedStatement = connection.prepareStatement(selectAllStudents); final ResultSet resultSet = preparedStatement.executeQuery();) {
+		
+			while (resultSet.next()) {
+			    final int rollNumber = resultSet.getInt(1);
+				final String name = resultSet.getString(2);
+				final Long phoneNumber = resultSet.getLong(3);
+				final String branch = resultSet.getString(4);
+				final Date admissionDate = resultSet.getDate(5);
 
 				students.put(rollNumber, new Student(rollNumber, name, phoneNumber, branch, admissionDate));
 			}
 		} catch (SQLException exception) {
-			System.out.println("Error Occured!");
+			System.out.println("No Student Record Is Found");
 		}
 		return students;
 	}

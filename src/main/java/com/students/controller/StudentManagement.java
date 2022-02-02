@@ -3,14 +3,11 @@ package com.students.controller;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.InputMismatchException;
 
-import com.students.dao.InvalidRollNumberException;
-import com.students.dao.NoSuchUpdateException;
-import com.students.dao.StoreStudentDataException;
+import com.students.exception.InvalidStudentDataException;
 import com.students.model.Student;
 import com.students.service.StudentService;
-import com.students.service.StudentServiceImplementation;
+import com.students.service.StudentServiceImplV2;
 import com.students.service.StudentValidation;
 import com.students.view.StudentView;
 
@@ -20,26 +17,26 @@ import com.students.view.StudentView;
  * @author KowsalyaSP
  */
 public class StudentManagement {
-	private static final StudentService STUDENT_INFORMATION = new StudentServiceImplementation();
+	private static final StudentService STUDENT_INFORMATION = new StudentServiceImplV2();
 	private static final StudentView VIEW = new StudentView();
 	
-	public static void addStudent(int rollNo, Student student) throws ParseException, SQLException, StoreStudentDataException {
+	public static void addStudent(int rollNo, Student student) throws ParseException, SQLException, InvalidStudentDataException {
 		STUDENT_INFORMATION.addStudent(rollNo, student);
 	}
 
-	public static void searchStudent(int rollNo) throws SQLException, InvalidRollNumberException {
+	public static void searchStudent(int rollNo) throws SQLException, InvalidStudentDataException {
 		VIEW.showStudent(STUDENT_INFORMATION.searchStudent(rollNo));
 	}
 
-	public static void removeStudent(int rollNo) throws SQLException, InvalidRollNumberException {
+	public static void removeStudent(int rollNo) throws SQLException, InvalidStudentDataException {
 		STUDENT_INFORMATION.removeStudent(rollNo);
 	}
 
-	public static void updateStudent(Student student) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
+	public static void updateStudent(Student student) throws ParseException, SQLException, InvalidStudentDataException {
 		STUDENT_INFORMATION.updateStudent(student);		
 	}
 
-	public static void updateAll(Student student)throws ParseException, SQLException, NoSuchUpdateException, InputMismatchException, InvalidRollNumberException {
+	public static void updateAll(Student student)throws ParseException, SQLException, InvalidStudentDataException {
 		STUDENT_INFORMATION.updateAllStudent(student);	
 	}
 	

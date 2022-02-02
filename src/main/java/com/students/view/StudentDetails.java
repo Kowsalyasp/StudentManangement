@@ -5,9 +5,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 import com.students.controller.StudentManagement;
-import com.students.dao.InvalidRollNumberException;
-import com.students.dao.NoSuchUpdateException;
-import com.students.dao.StoreStudentDataException;
+import com.students.exception.InvalidStudentDataException;
 import com.students.main.StudentMain;
 import com.students.model.Student;
 
@@ -20,10 +18,10 @@ public class StudentDetails {
 	/**
 	 * Adding the student details.
 	 * 
-	 * @throws StoreStudentDataException 
+	 * @throws InvalidStudentDataException 
 	 */
 	
-	public static void addStudent() throws ParseException, SQLException, StoreStudentDataException {
+	public static void addStudent() throws ParseException, SQLException, InvalidStudentDataException{
 		int rollNo = VIEW.getRollNo();
 		String name = VIEW.getName();
 		long phoneNumber = VIEW.getPhoneNumber();
@@ -31,42 +29,53 @@ public class StudentDetails {
 		Date admissionDate = VIEW.getAdmissionDate();
 		Student student = new Student(rollNo, name, phoneNumber, branch, admissionDate);
 		
-		StudentManagement.addStudent(rollNo, student);
+		try {
+		    StudentManagement.addStudent(rollNo, student);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	}
 
 	/**
 	 * Search the student detail based on roll number.
 	 * 
 	 * @throws SQLException 
-	 * @throws InvalidRollNumberException 
+	 * @throws InvalidStudentDataException 
 	 */
-	public static void searchStudent() throws SQLException, InvalidRollNumberException {
+	public static void searchStudent() throws SQLException, InvalidStudentDataException{
 		int rollNo = VIEW.getRollNo();
 
-		StudentManagement.searchStudent(rollNo);
+		try {
+		    StudentManagement.searchStudent(rollNo);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	}
 
 	/**
 	 * Remove the student detail for the specified roll number.
 	 * 
 	 * @throws SQLException 
-	 * @throws InvalidRollNumberException
+	 * @throws InvalidStudentDataException
 	 */
-	public static void removeStudent() throws SQLException, InvalidRollNumberException {
+	public static void removeStudent() throws SQLException, InvalidStudentDataException{
 		int rollNo = VIEW.getRollNo();
 
-		StudentManagement.removeStudent(rollNo);
+		try {		
+		    StudentManagement.removeStudent(rollNo);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	}
 
 	/**
 	 * Updating the student detail.
 	 * 
 	 * @throws SQLException 
-	 * @throws NoUpdateDataException 
-	 * @throws InvalidRollNumberException
 	 * @throws ParseException
+	 * @throws InvalidStudentDataException
 	 */
-	public static void updateStudent() throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
+	public static void updateStudent() throws ParseException, SQLException, InvalidStudentDataException {
 		System.out.println("Choose What You Want To Update \n 1. Student Name \n 2. Branch Name \n 3. Phone Number\n 4. Date of Birth\n 5. Update All");
 		int choice = StudentMain.SCANNER.nextInt();
 
@@ -91,55 +100,75 @@ public class StudentDetails {
 			break;
 		}
 	}
-
+		
 	/**
 	 * Update the student name based on roll number.
 	 * 
 	 * @throws SQLException 
-	 * @throws NoSuchUpdateException 	  
+	 * @throws InvalidStudentDataException	  
 	 */
-	private static void updateStudentName(int rollNo, String name) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
+	private static void updateStudentName(int rollNo, String name) throws ParseException, SQLException, InvalidStudentDataException {
 		Student student = new Student();
 		
 		student.setRollno(rollNo);
 		student.setName(name);
-		StudentManagement.updateStudent(student);
+		
+		try {
+		    StudentManagement.updateStudent(student);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	}
 
 	/**
 	 * Update the student branch name based on roll number. 
 	 */
-	private static void updateStudentBranch(int rollNo, String branchName) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
+	private static void updateStudentBranch(int rollNo, String branchName) throws ParseException, SQLException, InvalidStudentDataException {
 		Student student = new Student();
 		
 		student.setRollno(rollNo);
 		student.setBranch(branchName);
-		StudentManagement.updateStudent(student);
+		
+		try {
+		    StudentManagement.updateStudent(student);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	}
 
 	/**
 	 * Update the student phone number based on roll number.
 	 */
-	private static void updateStudentPhoneNumber(int rollNo, long phoneNumber) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
+	private static void updateStudentPhoneNumber(int rollNo, long phoneNumber) throws ParseException, SQLException, InvalidStudentDataException {
 		Student student = new Student();
 		
 		student.setRollno(rollNo);
 		student.setPhoneNumber(phoneNumber);
-		StudentManagement.updateStudent(student);
+		
+		try {
+		    StudentManagement.updateStudent(student);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	}
 
 	/**
 	 * Update the student admission date based on roll number.
 	 */
-	private static void updateStudentAdmissionDate(int rollNo, Date date) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
+	private static void updateStudentAdmissionDate(int rollNo, Date date) throws ParseException, SQLException, InvalidStudentDataException {
 		Student student = new Student();
 		
 		student.setRollno(rollNo);
 		student.setAdmissionDate(date);
-		StudentManagement.updateStudent(student);
+		
+		try {
+		    StudentManagement.updateStudent(student);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	}
 
-	 private static void updateAllStudent(int rollNo, String name, String branchName, long phoneNumber, Date date ) throws ParseException, SQLException, InvalidRollNumberException, NoSuchUpdateException {
+	 private static void updateAllStudent(int rollNo, String name, String branchName, long phoneNumber, Date date ) throws ParseException, SQLException, InvalidStudentDataException {
 		Student student = new Student();
 		
 		student.setRollno(rollNo);
@@ -147,7 +176,12 @@ public class StudentDetails {
 		student.setBranch(branchName);
 		student.setPhoneNumber(phoneNumber);
 		student.setAdmissionDate(date);		
-		StudentManagement.updateAll(student);
+		
+		try {
+		    StudentManagement.updateStudent(student);
+		} catch(InvalidStudentDataException exception) {
+			System.out.println(exception);
+		}
 	 }
 	 
 	/**

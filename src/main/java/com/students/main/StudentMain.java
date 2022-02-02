@@ -4,9 +4,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Scanner;
 
-import com.students.dao.InvalidRollNumberException;
-import com.students.dao.NoSuchUpdateException;
-import com.students.dao.StoreStudentDataException;
 import com.students.view.StudentDetails;
 
 /**
@@ -21,12 +18,8 @@ public class StudentMain {
 	/**
 	 * Method which makes use of all services such as adding, searching, removing,
 	 * updating the student details.
-	 * 
-	 * @throws StoreStudentDataException
-	 * @throws NoSuchUpdateException
-	 * @throws InvalidRollNumberException
 	 */
-	public static void main(String[] args) throws ParseException, SQLException, InvalidRollNumberException, StoreStudentDataException, NoSuchUpdateException {			
+	public static void main(String[] args) throws ParseException, SQLException {			
 		int choice;
 
 		do {
