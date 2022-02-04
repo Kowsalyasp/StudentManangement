@@ -1,20 +1,17 @@
 package com.students.dao;
 
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Map;
 
-import com.students.exception.InvalidStudentDataException;
 import com.students.model.Student;
 
 public interface StudentDao {
-	 Student insertStudent(int rollNo, Student student) throws InvalidStudentDataException;
+	 boolean insertStudent(Student student);
 	
-	 Student selectStudent(int rollNo) throws InvalidStudentDataException;
+	 Student selectStudent(int rollNo);
 	
-	 void deleteStudent(int rollNo) throws InvalidStudentDataException;
+	 boolean deleteStudent(int rollNo);
 	
-	 void updateStudent(Student student) throws ParseException, SQLException, InvalidStudentDataException;
+	 boolean updateStudent(Student student);
 	
 	 Map<Integer, Student> selectAllStudents();
 }

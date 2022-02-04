@@ -1,6 +1,6 @@
 package com.students.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Represents an student and specified fields and methods to get and set the

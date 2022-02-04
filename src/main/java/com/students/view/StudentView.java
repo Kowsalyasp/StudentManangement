@@ -1,7 +1,6 @@
 package com.students.view;
 
-import java.text.ParseException;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -61,7 +60,7 @@ public class StudentView {
 	/**
 	 * Get date of birth from the student and validate it based on input.
 	 */
-	public Date getAdmissionDate() throws ParseException {
+	public Date getAdmissionDate() {
 		System.out.println("Enter day/month/year");
 		String date = StudentMain.SCANNER.next();
 		Date admissionDate = StudentManagement.getAdmissionDate(date);

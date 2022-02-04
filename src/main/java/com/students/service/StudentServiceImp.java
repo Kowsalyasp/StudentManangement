@@ -1,14 +1,10 @@
 package com.students.service;
 
 import java.sql.SQLException;
-
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Map;
 
 import com.students.controller.StudentManagement;
-import com.students.exception.InvalidStudentDataException;
 import com.students.model.Student;
 import com.students.view.StudentDetails;
 
@@ -49,7 +45,7 @@ public class StudentServiceImp {
 	/**
 	 * Remove Student Detail by using roll number.
 	 */
-	public void removeStudent(int rollNo) throws SQLException, InvalidStudentDataException {
+	public void removeStudent(int rollNo)  {
 
 		if (!STUDENTS.containsKey(rollNo)) {
 			System.out.println("No student record found");
@@ -67,7 +63,7 @@ public class StudentServiceImp {
 	 * @throws InvalidRollNumberException
 	 * @throws SQLException
 	 */
-	public Student updateStudent(Student student) throws ParseException, SQLException, InvalidStudentDataException {
+	public Student updateStudent(Student student) {
 
 		if (STUDENTS.containsKey(student.getRollNo())) {
 			Student existingStudent = STUDENTS.get(student.getRollNo());
@@ -96,8 +92,7 @@ public class StudentServiceImp {
 		return STUDENTS;
 	}
 
-	public Student updateAllStudent(Student student)
-			throws InputMismatchException, ParseException, SQLException, InvalidStudentDataException {
+	public Student updateAllStudent(Student student) {
 		Student existingStudent = STUDENTS.get(student.getRollNo());
 		
 		existingStudent.setName(student.getName());

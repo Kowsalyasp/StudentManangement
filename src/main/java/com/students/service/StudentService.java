@@ -1,8 +1,6 @@
 package com.students.service;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.Map;
+import java.util.List;
 
 import com.students.model.Student;
 
@@ -10,16 +8,13 @@ import com.students.model.Student;
  * Interface which it define all services.
  */
 public interface StudentService {
-	Student addStudent(int rollNo, Student student);
+	boolean addStudent(Student student);
 
 	Student searchStudent(int rollNo);
 
-    void removeStudent(int rollNo) throws SQLException;
+    boolean removeStudent(int rollNo);
 
-	void updateStudent(Student student) throws ParseException, SQLException;
+	boolean updateStudent(Student student);
 
-	Map<Integer, Student> viewAllStudents();
-
-	void updateAllStudent(Student student) throws ParseException, SQLException;
-	
+	List<Student> viewAllStudents();	
 }

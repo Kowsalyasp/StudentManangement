@@ -1,10 +1,8 @@
 package com.students.controller;
 
 import java.sql.Date;
-import java.sql.SQLException;
-import java.text.ParseException;
+import java.util.List;
 
-import com.students.exception.InvalidStudentDataException;
 import com.students.model.Student;
 import com.students.service.StudentService;
 import com.students.service.StudentServiceImplV2;
@@ -20,28 +18,24 @@ public class StudentManagement {
 	private static final StudentService STUDENT_INFORMATION = new StudentServiceImplV2();
 	private static final StudentView VIEW = new StudentView();
 	
-	public static void addStudent(int rollNo, Student student) throws ParseException, SQLException, InvalidStudentDataException {
-		STUDENT_INFORMATION.addStudent(rollNo, student);
+	public static boolean addStudent(Student student) {
+		return STUDENT_INFORMATION.addStudent(student);
 	}
 
-	public static void searchStudent(int rollNo) throws SQLException, InvalidStudentDataException {
-		VIEW.showStudent(STUDENT_INFORMATION.searchStudent(rollNo));
+	public static Student searchStudent(int rollNo) {
+		return STUDENT_INFORMATION.searchStudent(rollNo);
 	}
 
-	public static void removeStudent(int rollNo) throws SQLException, InvalidStudentDataException {
-		STUDENT_INFORMATION.removeStudent(rollNo);
+	public static boolean removeStudent(int rollNo){
+		return STUDENT_INFORMATION.removeStudent(rollNo);
 	}
 
-	public static void updateStudent(Student student) throws ParseException, SQLException, InvalidStudentDataException {
-		STUDENT_INFORMATION.updateStudent(student);		
-	}
-
-	public static void updateAll(Student student)throws ParseException, SQLException, InvalidStudentDataException {
-		STUDENT_INFORMATION.updateAllStudent(student);	
+	public static boolean updateStudent(Student student){
+		return STUDENT_INFORMATION.updateStudent(student);		
 	}
 	
-	public static void viewAllStudents() {
-		STUDENT_INFORMATION.viewAllStudents();
+	public static List<Student> viewAllStudents() {
+		return STUDENT_INFORMATION.viewAllStudents();
 	}
 
 	public static int getRollNo() {
@@ -61,7 +55,7 @@ public class StudentManagement {
 	}
 	
 	public static String getBranch(String branchName) {
-	    return	StudentValidation.getBranchValidation(branchName);
+	    return StudentValidation.getBranchValidation(branchName);
 	}
 
 	public static Date getAdmissionDate(String date) {
