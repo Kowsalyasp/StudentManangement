@@ -5,7 +5,7 @@ import java.sql.Date;
 
 import com.students.controller.StudentManagement;
 import com.students.exception.InvalidStudentDataException;
-import com.students.exception.InvalidStudentDataException.InvalidRollNumberException;
+import com.students.exception.InvalidStudentDataException.InvalidSQLQueryException;
 import com.students.main.StudentMain;
 import com.students.model.Student;
 
@@ -27,12 +27,12 @@ public class StudentDetails {
 		final String branch = VIEW.getBranchName();
 		final Date admissionDate = VIEW.getAdmissionDate();
 		final Student student = new Student(rollNo, name, phoneNumber, branch, admissionDate);
-		boolean isStudentAdded = StudentManagement.addStudent(student);
-
-		if (isStudentAdded) {
+		 
+		try {
+		    StudentManagement.addStudent(student);
 			System.out.println("Successfully Added The Student Data");
-		} else {
-			throw new InvalidStudentDataException("Already Exist");
+		} catch(InvalidSQLQueryException e) {
+			System.out.println(e);
 		}
 	}
 
@@ -44,13 +44,10 @@ public class StudentDetails {
 
 		try {
 			Student student = StudentManagement.searchStudent(rollNo);
-			if (student == null) {
-				System.out.println("Student Record Is Not Found");				
-			} else {
-				System.out.println(student);
-			}
-		} catch (InvalidStudentDataException exception) {
-			throw new InvalidRollNumberException("Invalid Roll Number");
+			
+			System.out.println(student);			
+		} catch (InvalidSQLQueryException exception) {
+			System.out.println(exception);
 		}
 	}
 
@@ -59,12 +56,12 @@ public class StudentDetails {
 	 */
 	public static void removeStudent() {
 		final int rollNo = VIEW.getRollNo();
-		boolean isStudentRemoved = StudentManagement.removeStudent(rollNo);
-
-		if (isStudentRemoved) {
-			System.out.println("Successfully Deleted The Student Data");
-		} else {
-			throw new InvalidRollNumberException("Invalid Roll Number");
+		
+		try {
+		    StudentManagement.removeStudent(rollNo);
+			System.out.println("Successfully Removed");			
+		} catch (InvalidSQLQueryException exception) {
+			System.out.println(exception);
 		}
 	}
 
@@ -104,13 +101,8 @@ public class StudentDetails {
 		student.setName(name);
 
 		try {
-			boolean updateStudent = StudentManagement.updateStudent(student);
-
-			if (updateStudent) {
-				System.out.println("Successfully updated the student data");
-			} else {
-				throw new InvalidRollNumberException("Invalid Roll Number");
-			}
+			StudentManagement.updateStudent(student);
+			System.out.println("Successfully updated the student data");
 		} catch (InvalidStudentDataException exception) {
 			System.out.println(exception);
 		}
@@ -126,11 +118,8 @@ public class StudentDetails {
 		student.setBranch(branchName);
 
 		try {
-			boolean updateStudent = StudentManagement.updateStudent(student);
-
-			if (updateStudent) {
-				System.out.println("Successfully updated the student data");
-			}
+			StudentManagement.updateStudent(student);
+			System.out.println("Successfully updated the student data");
 		} catch (InvalidStudentDataException exception) {
 			System.out.println(exception);
 		}
@@ -146,11 +135,8 @@ public class StudentDetails {
 		student.setPhoneNumber(phoneNumber);
 
 		try {
-			boolean updateStudent = StudentManagement.updateStudent(student);
-
-			if (updateStudent) {
-				System.out.println("Successfully updated the student data");
-			}
+			StudentManagement.updateStudent(student);
+			System.out.println("Successfully updated the student data");
 		} catch (InvalidStudentDataException exception) {
 			System.out.println(exception);
 		}
@@ -166,11 +152,8 @@ public class StudentDetails {
 		student.setAdmissionDate(date);
 
 		try {
-			boolean updateStudent = StudentManagement.updateStudent(student);
-
-			if (updateStudent) {
-				System.out.println("Successfully updated the student data");
-			}
+			StudentManagement.updateStudent(student);
+			System.out.println("Successfully updated the student data");
 		} catch (InvalidStudentDataException exception) {
 			System.out.println(exception);
 		}

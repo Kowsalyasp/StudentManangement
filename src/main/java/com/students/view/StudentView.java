@@ -75,6 +75,7 @@ public class StudentView {
 
 		for (Entry<Integer, Student> entry : map.entrySet()) {
 			Student value = entry.getValue();
+			
 			System.out.println(value);
 		}
 	}

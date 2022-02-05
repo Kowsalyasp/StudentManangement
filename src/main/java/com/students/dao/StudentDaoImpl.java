@@ -57,6 +57,7 @@ public class StudentDaoImpl implements StudentDao {
 				final Date admissionDate = resultSet.getDate(5);
 				student = new Student(rollNo, name, phoneNumber, branch, admissionDate);
 			}
+			resultSet.close();
 			return student;
 		} catch (SQLException exception) {
 			throw new InvalidStudentDataException.InvalidSQLQueryException(exception.getMessage());

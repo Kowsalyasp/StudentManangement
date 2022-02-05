@@ -20,6 +20,7 @@ public class StudentValidation {
 		if (!rollNumber.matches("[0-9]{3}")) {
 			System.out.println("check your roll number  is incorrect \n Enter valid rollno:");
 			String rollNo = StudentMain.SCANNER.next();
+			
 			return StudentValidation.getRollNumberValidation(rollNo);
 		}
 		return Integer.parseInt(rollNumber);
@@ -33,6 +34,7 @@ public class StudentValidation {
 		if (!name.matches("[A-Z][a-z]*||[A-Za-z\\s]*")) {
 			System.out.println("Check your name is incorrect \n Enter valid name:");
 			String validName = StudentMain.SCANNER.next();
+			
 			return StudentValidation.getNamevalidation(validName);
 		}
 		return name;
@@ -46,6 +48,7 @@ public class StudentValidation {
 		if (!phoneNumber.matches("[6789]{1}[0-9]{9}")) {
 			System.out.println("Check your mobile Number is incorrect \n Enter valid phoneNumber:");
 			String phoneNo = StudentMain.SCANNER.next();
+			
 			return StudentValidation.getPhoneNumbervalidation(phoneNo);
 		}
 		return Long.parseLong(phoneNumber);
@@ -59,6 +62,7 @@ public class StudentValidation {
 		if (!branchName.matches("^[A-Z][a-z]*$")) {
 			System.out.println("Check your branch  is incorrect \n Enter valid branch name:");
 			String validBranchName = StudentMain.SCANNER.next();
+			
 			return StudentValidation.getBranchValidation(validBranchName);
 		}
 		return branchName;
