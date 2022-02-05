@@ -43,12 +43,13 @@ public class StudentDaoImpl implements StudentDao {
 	 */
 	public Student selectStudent(final int rollNo) {
 		Student student = null;
+		ResultSet resultSet = null;
 		final String selectQuery = "SELECT roll_no, name, phone_number, branch, admission_date FROM student WHERE is_active = true AND roll_no =?";
 
 		try (Connection connection = StudentDbConnection.getConnection();
 				PreparedStatement statement = connection.prepareStatement(selectQuery);) {
 			statement.setInt(1, rollNo);
-			ResultSet resultSet = statement.executeQuery();
+			resultSet = statement.executeQuery();
 			
 			while (resultSet.next()) {
 				final String name = resultSet.getString(2);
@@ -57,11 +58,17 @@ public class StudentDaoImpl implements StudentDao {
 				final Date admissionDate = resultSet.getDate(5);
 				student = new Student(rollNo, name, phoneNumber, branch, admissionDate);
 			}
-			resultSet.close();
 			return student;
 		} catch (SQLException exception) {
 			throw new InvalidStudentDataException.InvalidSQLQueryException(exception.getMessage());
-		} 			
+		} finally {
+			
+			try {
+				resultSet.close();
+			} catch (SQLException exception) {
+				throw new InvalidStudentDataException.InvalidSQLQueryException(exception.getMessage());
+			}
+		}
 	}
 
 	/**
